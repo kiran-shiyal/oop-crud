@@ -106,50 +106,55 @@ function input_data($data)
 </head>
 
 <body>
+<form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipartform-data">
+    <h2>Registration Form</h2>
+        <div class="grid-container">
+            <div class="grid-item">
+                <label for="firstName">First Name :</label>
+                <input type="text" id="firstName" name="firstName" placeholder="enter a firstName" />
+                <span class="error"> <?php echo $fnameErr; ?></span>
 
-    <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data">
-
-
-        <label for="firstName">First Name :</label>
-        <input type="text" id="firstName" name="firstName" value="<?php echo $fname; ?>" placeholder="enter a firstName">
-        <span class="error"> <?php echo $fnameErr; ?></span>
-
-        <label for="lastName">Last Name :</label>
-        <input type="text" id="lastName" name="lastName" value="<?php echo $lname; ?>" placeholder="enter a lastName">
-        <span class="error"> <?php echo $lnameErr; ?></span>
-
-
-        <label for="email">Email :</label>
-        <input type="text" id="email" name="email" value="<?php echo $email; ?>" autocomplete="off" placeholder="enter a email">
-        <span class="error"> <?php echo $emailErr; ?></span>
-        <label for="password">Password :</label>
-
-        <input type="password" id="password" name="password" value="<?php echo $password; ?>" placeholder="enter a password">
-
-
-        <span class="error"> <?php echo $passwordErr; ?></span>
-
-
-
-        <label for="dob">Date of Birth :</label>
-        <input type="date" id="dob" name="dob" value="<?php echo $dob; ?>">
-        <span class="error"> <?php echo $dobErr; ?></span>
-        <label>Gender :</label>
-        <div class="gender-container">
-            <label><input type="radio" name="gender" value="male"> Male</label>
-            <label><input type="radio" name="gender" value="female"> Female</label>
-            <label><input type="radio" name="gender" value="other"> Other</label>
+            </div>
+            <div class="grid-item">
+                <label for="lastName">Last Name :</label>
+                <input type="text" id="lastName" name="lastName" placeholder="enter a lastName" />
+                <span class="error"> <?php echo $lnameErr; ?></span>
+            </div>
+            <div class="grid-item"> 
+                <label for="email">Email :</label>
+                <input type="text" id="email" name="email" autocomplete="off" placeholder="enter a email">
+                <span class="error"> <?php echo $emailErr; ?></span>
+            </div>
+            <div class="grid-item"> <label for="password">Password :</label>
+                <input type="password" id="password" name="password" placeholder="enter a password">
+                <span class="error"> <?php echo $passwordErr; ?></span>
+            </div>
+            <div class="grid-item"> 
+                <label for="dob">Date of Birth :</label>
+                <input type="date" id="dob" name="dob">
+                <span class="error"> <?php echo $dobErr; ?></span>
+            </div>
+            <div class="grid-item center " >
+                
+                <label for="" class="gender">Gender: </label>
+                    <input type="radio" name="gender" id="male" value="male">
+                    <label for="male"> Male</label>
+                    <input type="radio" name="gender" id="female"  value="female">
+                    <label for="female"> Female</label>
+                    <input type="radio" name="gender" id="other" value="other"> 
+                    <label for="other">Other</label>
+                   
+               </div>
+            <div class="grid-item"> <label for="contactNumber">Contact Number :</label>
+                <input type="number" id="contactNumber" name="number" placeholder="enter a number">
+            </div>
+            <div class="grid-item"> <label for="profilePicture">Profile Picture :</label>
+                <input type="file" id="profilePicture" name="image">
+            </div>
+            <div class="grid-item"> <button type="submit" name="submit">submit</button>
+            </div>
+            <a href="login.php">Click here to Login.</a>
         </div>
-
-        <label for="contactNumber">Contact Number :</label>
-        <input type="number" id="contactNumber" name="number" placeholder="enter a number">
-
-        <label for="profilePicture">Profile Picture :</label>
-        <input type="file" id="profilePicture" name="image">
-        <button type="submit" name="submit">submit</button>
-
-
-        <a href="login.php">Click here to Login.</a>
     </form>
 
 

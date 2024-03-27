@@ -3,7 +3,7 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100%;
-    background-color: yellowgreen;
+    /* background-color: yellowgreen; */
     margin-top: 130px;
 }
 
@@ -14,7 +14,7 @@ form {
     padding: 20px;
     border: 1px solid black;
     border-radius: 8px;
-    background-color: yellowgreen;
+    /* background-color: yellowgreen; */
 
 
 }
