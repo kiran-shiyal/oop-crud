@@ -1,0 +1,80 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-height: 100%;
+    margin-left: 140px;
+    margin-top: 10px;
+    background-color: beige;
+}
+
+form {
+   
+    max-width: 70%;
+    margin: auto;
+    display: grid;
+    gap: 7px;
+  
+    overflow: auto;/* Set a maximum height for the form */
+      /* Enable vertical scrolling when needed */
+}
+
+label {
+    display: inline-block;
+}
+
+input,
+select {
+    width: 70%;
+    padding: 6px;
+    box-sizing: border-box;
+}
+
+.gender-container {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.gender-container label {
+    margin-bottom: 0;
+    cursor: pointer;
+}
+
+button {
+    width: 70%;
+    padding: 6px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+.error {
+    color: #ff0000;  
+   
+}
+.image-container {
+    display: flex;
+    align-items: center;
+}
+
+form .image-container img {
+  
+    margin-right: 10px;
+    margin-bottom: 14px;
+
+}
+
+.file {
+    display: inline;
+    margin-bottom: 40px;
+}
+ 
+  

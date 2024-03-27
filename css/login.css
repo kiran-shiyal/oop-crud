@@ -1,0 +1,79 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100%;
+    background-color: yellowgreen;
+    margin-top: 130px;
+}
+
+form {
+    margin-bottom: 100px;
+    max-width: 300px;
+    width: 100%;
+    padding: 20px;
+    border: 1px solid black;
+    border-radius: 8px;
+    background-color: yellowgreen;
+
+
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 20px;
+}
+
+input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    border: 1px solid black;
+    border-radius: 8px;
+    font-size: 15px;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 25px;
+
+}
+
+button {
+    width: 50%;
+    margin-left: 25%;
+    padding: 10px;
+    background-color: green;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 0px;
+    font-size: 15px;
+    /* Add space between password field and button */
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+a {
+    text-decoration: none;
+    display: block;
+    margin-top: 20px;
+    text-align: center;
+    font-size: 19px;
+}
+
+.error {
+    color: #ff0000;
+
+}
+
+span {
+    margin-top: 20px;
+
+}
