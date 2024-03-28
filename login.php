@@ -6,12 +6,12 @@
 
      header("Refresh: 0; url = index.php");
      exit;
- } 
+ }
  $emailErr = $passwordErr = "";
  $email = $password = "";
  if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"]))
  {
-
+    
      //  $conn = mysqli_connect("localhost","root","root"," student");
      // $email = $_POST["email"];
      // $password = $_POST["password"];
@@ -44,7 +44,7 @@
      {
          // $sql ="SELECT * FROM users WHERE email = '$email' && password = '$password'";
          // $result = mysqli_query($conn, $sql);
-         include("crud.php");
+         include ("crud.php");
          $student = new Database();
          $result = $student->login($email);
 
@@ -52,8 +52,8 @@
          {
              $res = mysqli_fetch_assoc($result);
              $hashedPassword = $res['password'];
-             
-             
+
+
              if (password_verify($password, $hashedPassword))
              {
                  $_SESSION['userName'] = $res['first_name'] . " " . $res['last_name'];
@@ -88,26 +88,30 @@
 
  <body>
 
-
-     <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']);
-     ?>" method="post">
+        <div class="container">
+           <div class="form">
+     <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
          <h2>Login</h2>
+           <div class="grid-container">
 
-          
-         <label for="username">Email :</label>
+         
+          <div class="grid-item">
+          <label for="username">Email :</label>
          <input type="email" name="email" id="username" placeholder="enter a email" value="<?php echo $email; ?>">
-         <span class="error"> <?php echo $emailErr; ?></span>
+        </div>
+        <span class="error"> <?php echo $emailErr; ?></span>
+          <div class="grid-item">
+          <label for="password">Password :</label>
+         <input type="password" name="password" id="password" placeholder="enter a password" value="<?php echo $password ?>"   >
 
-         <label for="password">Password :</label>
-         <input type="password" name="password" id="password" placeholder="enter a password"   >
-
-         <span class="error"> <?php echo $passwordErr; ?></span>
-
-
+        </div>
+        <span class="error"> <?php echo $passwordErr; ?></span>
          <button type="submit" name="submit">Login</button>
          <a href="register.php">Click here to Register.</a>
+         </div>
      </form>
-
+     </div> 
+     </div>
  </body>
 
  </html>

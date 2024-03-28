@@ -8,8 +8,8 @@ include("crud.php");
 
 $student = new Database();
 
-$fnameErr = $lnameErr = $emailErr = $passwordErr = $dobErr = "";
-$fname = $lname = $email = $password = $dob = $gender = "";
+$fnameErr = $lnameErr = $emailErr = $passwordErr = $dobErr = $genderErr = $imgErr = "";
+$fname = $lname = $email = $password = $dob = $gender = $folder = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"])) {
 
@@ -61,15 +61,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"])) {
     }
 
 
-    if (empty($fnameErr) && empty($lnameErr) && empty($emailErr) && empty($passwordErr) && empty($dobErr)) {
-
-        $gender = $_POST['gender'];
+  if (empty($fnameErr) && empty($lnameErr) && empty($emailErr) && empty($passwordErr) && empty($dobErr)) {
+        
+        $gender = $_POST["gender"];
         $number = input_data($_POST['number']);
-
         $img = $_FILES['image']['name'];
         $img_temp = $_FILES['image']['tmp_name'];
         $folder = "images/" . $img;
-
+                        
         move_uploaded_file($img_temp, $folder);
 
         $hashPassword = password_hash($password, PASSWORD_DEFAULT);
@@ -106,59 +105,78 @@ function input_data($data)
 </head>
 
 <body>
-<form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipartform-data">
-    <h2>Registration Form</h2>
+    <div class="container">
+        <div class="apply-box">
+            <h2>Registration Form</h2>
+<form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipartform-data" onsubmit="return validateForm()">
         <div class="grid-container">
             <div class="grid-item">
                 <label for="firstName">First Name :</label>
-                <input type="text" id="firstName" name="firstName" placeholder="enter a firstName" />
-                <span class="error"> <?php echo $fnameErr; ?></span>
+                <input type="text" id="firstName" name="firstName"  value="<?php echo $fname; ?>" placeholder="enter a firstName" />
+                <span class="error" id="fnameErr"> <?php echo $fnameErr; ?></span>
 
             </div>
             <div class="grid-item">
                 <label for="lastName">Last Name :</label>
-                <input type="text" id="lastName" name="lastName" placeholder="enter a lastName" />
+                <input type="text" id="lastName" name="lastName"  value="<?php echo $lname; ?>" placeholder="enter a lastName" />
                 <span class="error"> <?php echo $lnameErr; ?></span>
             </div>
             <div class="grid-item"> 
                 <label for="email">Email :</label>
-                <input type="text" id="email" name="email" autocomplete="off" placeholder="enter a email">
+                <input type="email" id="email" name="email" value="<?php echo $email; ?>" autocomplete="off" placeholder="enter a email">
                 <span class="error"> <?php echo $emailErr; ?></span>
             </div>
             <div class="grid-item"> <label for="password">Password :</label>
-                <input type="password" id="password" name="password" placeholder="enter a password">
+         <input type="password" id="password" name="password" value ="<?php echo $password; ?>" placeholder="enter a password">
                 <span class="error"> <?php echo $passwordErr; ?></span>
             </div>
             <div class="grid-item"> 
                 <label for="dob">Date of Birth :</label>
-                <input type="date" id="dob" name="dob">
+                <input type="date" id="dob" name="dob" value="<?php echo $dob; ?>">
                 <span class="error"> <?php echo $dobErr; ?></span>
             </div>
             <div class="grid-item center " >
                 
-                <label for="" class="gender">Gender: </label>
+                <label for="" class="gender">Gender : </label>
                     <input type="radio" name="gender" id="male" value="male">
                     <label for="male"> Male</label>
                     <input type="radio" name="gender" id="female"  value="female">
                     <label for="female"> Female</label>
                     <input type="radio" name="gender" id="other" value="other"> 
                     <label for="other">Other</label>
-                   
+
                </div>
             <div class="grid-item"> <label for="contactNumber">Contact Number :</label>
-                <input type="number" id="contactNumber" name="number" placeholder="enter a number">
+          <input type="number" id="contactNumber" name="number" placeholder="enter a number">
             </div>
-            <div class="grid-item"> <label for="profilePicture">Profile Picture :</label>
-                <input type="file" id="profilePicture" name="image">
+            <div class="grid-item"> 
+                <label for="profilePicture">Profile Picture :</label>
+                <input type="file" id="profilePicture"  name="image">
             </div>
-            <div class="grid-item"> <button type="submit" name="submit">submit</button>
+            <div class="grid-item"> 
+                <button type="submit" name="submit">submit</button>
             </div>
             <a href="login.php">Click here to Login.</a>
         </div>
     </form>
+    </div>
+    </div>
+ <script>
+    
+function validateForm(){
+    let name = document.getElementById("firstName").value;
+
+    if (name == "") {
+        
+        document.getElementById("fnameErr").innerHTML = "name name is required";
+        
+    }
 
 
+}
 
+ </script>
+  
 </body>
 
 </html>

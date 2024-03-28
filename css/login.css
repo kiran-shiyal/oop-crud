@@ -1,58 +1,74 @@
-body {
+/* body {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100%;
-    /* background-color: yellowgreen; */
+   
     margin-top: 130px;
-}
-
-form {
-    margin-bottom: 100px;
-    max-width: 300px;
-    width: 100%;
-    padding: 20px;
-    border: 1px solid black;
-    border-radius: 8px;
-    /* background-color: yellowgreen; */
-
-
-}
-
-label {
-    display: block;
-    margin-bottom: 8px;
-    font-size: 20px;
-}
-
-input {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 10px;
+} */
+*{
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
+
+}
+body{
+    background-color: bisque;
+}
+.container{
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    justify-content:center ;
+    align-items: center;
+    height: 100vh;
+     
+}
+
+.grid-container{
+    
+    display: grid;
+    grid-template-columns: 1fr; 
+    gap: 9px;
+    font-size: 17px;
+}
+ .form{
+    max-width: 400px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+   background-color: beige;
+    margin: 0 auto;  
+    padding: 20px;
+    border-radius: 5px;
+
+ }
+input 
+{
+    width: 100%;
+    padding: 8px;  
     border: 1px solid black;
-    border-radius: 8px;
+    border-radius: 5px;
     font-size: 15px;
 }
-
 h2 {
     text-align: center;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     font-size: 25px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+
 
 }
 
 button {
-    width: 50%;
-    margin-left: 25%;
+    width: 100%;
+    margin-top: 10px;
     padding: 10px;
     background-color: green;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    margin-top: 0px;
-    font-size: 15px;
+  
+    font-size: 17px;
     /* Add space between password field and button */
 }
 
@@ -62,10 +78,9 @@ button:hover {
 
 a {
     text-decoration: none;
-    display: block;
-    margin-top: 20px;
+    
     text-align: center;
-    font-size: 19px;
+    font-size: 17px;
 }
 
 .error {
@@ -73,7 +88,9 @@ a {
 
 }
 
-span {
-    margin-top: 20px;
+ 
+input:focus{
 
+    outline: 2px solid #45a049;
+    border: none;
 }

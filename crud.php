@@ -62,9 +62,9 @@ class Database {
 	}
 	
 	// update data function
-	public function update_data($fname, $lname, $email, $password, $date, $gender, $number, $image, $id){
+	public function update_data($fname, $lname, $email, $date, $gender, $number, $image, $id){
 
-		$update_data = "UPDATE users SET first_name = '$fname', last_name = '$lname', email = '$email', password = '$password', dob = '$date', gender = '$gender', contact_number = '$number', profile_picture = '$image' WHERE id = $id ";
+		$update_data = "UPDATE users SET first_name = '$fname', last_name = '$lname', email = '$email',  dob = '$date', gender = '$gender', contact_number = '$number', profile_picture = '$image' WHERE id = $id ";
 
 		$result = $this->connection->query($update_data); 
 		if($result)

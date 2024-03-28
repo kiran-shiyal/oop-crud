@@ -1,19 +1,19 @@
-<?php
-include("crud.php");
+ <?php
+include ("crud.php");
 session_start();
 
-if (!isset($_SESSION['userName']) && empty($_SESSION['userName'])) {
-     
-    header("Refresh: 0; url = login.php"); 
-    exit;
-}
+// if (!isset($_SESSION['userName']) && empty($_SESSION['userName'])) {
+
+//     header("Refresh: 0; url = login.php"); 
+//     exit;
+// }
 $student = new Database();
 $id = $_GET['id'];
 
 // fetch data 
 $result = $student->update($id);
 $res = mysqli_fetch_assoc($result);
- 
+ $newpass = convert_uudecode($res['password']);
 // update data 
 $fnameErr = $lnameErr = $emailErr = $passwordErr = $dobErr = "";
 $fname = $lname = $email = $password = $dob = $gender = "";
@@ -64,19 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update']))
         }
     }
 
-
-    if (empty($_POST["password"]))
-    {
-        $passwordErr = "password is required";
-    } else
-    {
-
-        $password = input_data($_POST["password"]);
-        if (strlen($password) < 8)
-        {
-            $passwordErr = "Password too short! ";
-        }
-    }
+ 
 
     if (empty($_POST["dob"]))
     {
@@ -109,8 +97,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update']))
 
 
         move_uploaded_file($img_temp, $folder);
-        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-        $result = $student->update_data($fname, $lname, $email, $hashedPassword, $dob, $gender, $number, $folder, $id);
+        
+        $result = $student->update_data($fname, $lname, $email, $dob, $gender, $number, $folder, $id);
 
 
         if ($result)
@@ -145,58 +133,73 @@ function input_data($data)
 
 <body>
 
-    <form method="POST" action="#" enctype="multipart/form-data">
-        <label for="firstName">First Name :</label>
-        <input type="text" id="firstName" name="firstName" value="<?php echo $res['first_name']; ?>">
-        <span class="error"> <?php echo $fnameErr; ?></span>
+    <div class="container">
+        <div class="apply-box">
+            <h2>Update Form</h2>
+            <form method="POST" action="#" enctype="multipart/form-data">
+                <div class="grid-container">
+                    <div class="grid-item">
+                        <label for="firstName">First Name :</label>
+                        <input type="text" id="firstName" name="firstName" value="<?php echo $res['first_name']; ?>">
+                        <span class="error"> <?php echo $fnameErr; ?></span>
 
-        <label for="lastName">Last Name :</label>
-        <input type="text" id="lastName" name="lastName" value="<?php echo $res['last_name']; ?>">
-        <span class="error"> <?php echo $lnameErr; ?></span>
+                    </div>
+                    <div class="grid-item">
+                        <label for="lastName">Last Name :</label>
+                        <input type="text" id="lastName" name="lastName" value="<?php echo $res['last_name']; ?>">
+                        <span class="error"> <?php echo $lnameErr; ?></span>
 
-        <label for="email">Email :</label>
-        <input type="email" id="email" name="email" value="<?php echo $res['email']; ?>">
-        <span class="error"> <?php echo $emailErr; ?></span>
+                    </div>
+                    <div class="grid-item">
+                        <label for="email">Email :</label>
+                        <input type="email" id="email" name="email" value="<?php echo $res['email']; ?>">
+                        <span class="error"> <?php echo $emailErr; ?></span>
+                    </div>
+                     
+                    <div class="grid-item">
+                        <label for="dob">Date of Birth :</label>
+                        <input type="date" id="dob" name="dob" value="<?php echo $res['dob']; ?>">
+                        <span class="error"> <?php echo $dobErr; ?></span>
+                    </div>
+                    <div class="grid-item center ">
 
-        <label for="password">Password :</label>
-        <input type="text" id="password" name="password" value="<?php echo  $res['password']; ?>">
-        <span class="error"> <?php echo $passwordErr; ?></span>
+                        <label for="" class="gender">Gender : </label>
+                        <input type="radio" name="gender" id="male" value="male" <?php if ($res['gender'] == "male")
+                        {
+                            echo "checked";
+                        } ?>>
+                        <label for="male"> Male</label>
+                        <input type="radio" name="gender" id="female" value="female" <?php if ($res['gender'] == "female")
+                        {
+                            echo "checked";
+                        } ?>>
+                        <label for="female"> Female</label>
+                        <input type="radio" name="gender" id="other" value="other" <?php if ($res['gender'] == "other")
+                        {
+                            echo "checked";
+                        } ?>>
+                        <label for="other">Other</label>
 
-        <label for="dob">Date of Birth :</label>
-        <input type="date" id="dob" name="dob" value="<?php echo $res['dob']; ?>">
-        <span class="error"> <?php echo $dobErr; ?></span>
+                    </div>
+                    <div class="grid-item">
+                        <label for="contactNumber">Contact Number :</label>
+                        <input type="number" id="contactNumber" name="number" value="<?php echo $res['contact_number']; ?>">
+                    </div>
+                    <div class="grid-item">
+                        <label for="profilePicture">Profile Picture:</label>
 
 
-        <label>Gender :</label>
-        <div class="gender-container">
-            <label><input type="radio" name="gender" value="male" required <?php if ($res['gender'] == "male")
-            {
-                echo "checked";
-            } ?>> Male</label>
-
-            <label><input type="radio" name="gender" value="female" <?php if ($res['gender'] == "female")
-            {
-                echo "checked";
-            } ?>> Female</label>
-
-            <label><input type="radio" name="gender" value="other" <?php if ($res['gender'] == "other")
-            {
-                echo "checked";
-            } ?>> Other</label>
+                        <input type="File" id="profilePicture" name="image" class="file">
+                        <img src='<?php echo $res['profile_picture'] ?>' width='100' height='70'>
+                    </div>
+                    <div class="grid-item"> 
+                    <button type="submit" name="update">Update</button>
+                    </div>
+                     
+                </div>
+            </form>
         </div>
-
-        <label for="contactNumber">Contact Number :</label>
-        <input type="number" id="contactNumber" name="number" value="<?php echo $res['contact_number']; ?>">
-        <label for="profilePicture">Profile Picture:</label>
-        <div class="image-container">
-
-
-            <img src='<?php echo $res['profile_picture'] ?>' width='100' height='70'>
-            <input type="File" id="profilePicture" name="image" class="file">
-        </div>
-        <button type="submit" name="update">Update</button>
-    </form>
+    </div>
 </body>
 
 </html>
-<?php
