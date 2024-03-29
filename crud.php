@@ -62,9 +62,9 @@ class Database {
 	}
 	
 	// update data function
-	public function update_data($fname, $lname, $email, $date, $gender, $number, $image, $id){
+	public function update_data($fname, $lname,		$date, $gender, $number, $image, $id){
 
-		$update_data = "UPDATE users SET first_name = '$fname', last_name = '$lname', email = '$email',  dob = '$date', gender = '$gender', contact_number = '$number', profile_picture = '$image' WHERE id = $id ";
+		$update_data = "UPDATE users SET first_name = '$fname', last_name = '$lname', dob = '$date', gender = '$gender', contact_number = '$number', profile_picture = '$image' WHERE id = $id ";
 
 		$result = $this->connection->query($update_data); 
 		if($result)
@@ -106,9 +106,14 @@ class Database {
 		return $result;
 	}
 	 
+	
+	// email existing function
+	public function checkEmailExists($email) {
+		$sql = "SELECT * FROM users WHERE email = '$email'";
+		$result = $this->connection->query($sql);
+		return $result;
+	}
 }
-
- 
 
 
  
