@@ -27,7 +27,9 @@
     display: grid;
     grid-template-columns:  1fr;
     padding: 17px;
-    gap: 17px;  
+    gap: 16px;
+    
+   
 }
 
  h2{
@@ -47,6 +49,7 @@ input[type="number"]
     border: 1px solid black;
     border-radius: 5px;
     font-size: 15px;
+    
 }
 input[type="file"]{
 
@@ -85,7 +88,9 @@ button:hover {
 }
 .error {
     color: #ff0000;
-    font-size: 16px; 
+    font-size: 16px;
+    display: block;
+    
 }
 
 a {
@@ -124,6 +129,7 @@ input[type="number"]
     width:16px;
     cursor: pointer;
     margin-left: 10px;
+     
      
  }
  .center{

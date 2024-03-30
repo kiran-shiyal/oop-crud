@@ -108,15 +108,9 @@ class Database {
 	 
 	
 	// email existing function
-	public function checkEmailExists($email) {
-		$sql = "SELECT * FROM users WHERE email = '$email'";
-		$result = $this->connection->query($sql);
-		return $result;
-	}
 }
 
-
- 
+		
  
 
     

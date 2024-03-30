@@ -48,12 +48,12 @@
          $student = new Database();
          $result = $student->login($email);
 
-         if (mysqli_num_rows($result) == 1)
+         if (mysqli_num_rows($result) == true)
          {
              $res = mysqli_fetch_assoc($result);
              $hashedPassword = $res['password'];
 
-
+            
              if (password_verify($password, $hashedPassword))
              {
                  $_SESSION['userName'] = $res['first_name'] . " " . $res['last_name'];

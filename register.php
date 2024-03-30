@@ -9,7 +9,7 @@ include("crud.php");
 $student = new Database();
 
 $emailErr = "";
-$fname = $lname = $email = $password = $dob = $gender = $img = $img_temp = "";
+$fname = $lname = $email= $number = $password = $dob = $gender = $img = $img_temp = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"])) {
 
@@ -30,16 +30,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"])) {
         move_uploaded_file($img_temp, $folder);
 
         $hashPassword = password_hash($password, PASSWORD_DEFAULT);
-        $student = new Database();
+         
 
-        $exist = $student->checkEmailExists($email);
+      
         
-        if (mysqli_num_rows( $exist) == 1) {
-
-            $emailErr = "email already exist";
-            
-        }else{
-       
+      
         $result = $student->insert($fname, $lname, $email, $hashPassword, $birth_date, $gender, $number, $folder);
 
         if ($result) {
@@ -50,7 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"])) {
         }
     }
  
-}
+
 ?>
 
 <!DOCTYPE html>
@@ -72,7 +67,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"])) {
                     <div class="grid-item">
                         <label for="firstName">First Name :</label>
                         <input type="text" id="firstName" name="firstName" value="<?php echo $fname; ?>" placeholder="enter a firstName" />
-                        <span class="error" id="fnameErr"></span>
+                        <div class="error" id="fnameErr"> </div>
 
                     </div>
                     <div class="grid-item">
@@ -82,17 +77,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"])) {
                     </div>
                     <div class="grid-item">
                         <label for="email">Email :</label>
-                        <input type="text" id="email" name="email" value="<?php echo $email; ?>" autocomplete="on" placeholder="enter a email" onblur="checkEmail()">
-                        <span class="error" id="emailErr"> <?php echo $emailErr; ?></span>
+                        <input type="text" id="email" name="email"  value="<?php echo $email; ?>" autocomplete="on" placeholder="enter a email" onblur="checkEmail()">
+                        <span class="error" id="emailErr">  <?php echo $emailErr; ?></span>
                     </div>
                     <div class="grid-item"> <label for="password">Password :</label>
                         <input type="password" id="password" name="password" value="<?php echo $password; ?>" placeholder="enter a password">
-                        <span class="error" id="passwordErr"></span>
+                        <span class="error" id="passwordErr"> </span>
                     </div>
                         <div class="grid-item">
                             <label for="dob">Date of Birth :</label>
                             <input type="date" id="dob" name="dob" value="<?php echo $dob; ?>">
-                            <span class="error" id="dateErr"></span>
+                            <span class="error" id="dateErr"> </span>
                     </div>
                     <div class="grid-item">
                         <div class="center">
@@ -103,17 +98,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"])) {
                             <label for="female"> Female</label>
                             <input type="radio" name="gender" id="other" value="other">
                             <label for="other">Other</label>
-                        </div>
-                        <span class="error" id="genderErr"></span>
+                         </div>
+                        <span class="error" id="genderErr"> </span>
                     </div>
                     <div class="grid-item"> <label for="contactNumber">Contact Number :</label>
-                        <input type="number" id="contactNumber" name="number" value="<?php echo $number ?>" placeholder="enter a number">
-                        <span class="error" id="numberErr"></span>
+                        <input type="number" id="contactNumber" name="number" value="<?php echo $number ?>" >
+                        <span class="error" id="numberErr"> </span>
                     </div>
                     <div class="grid-item">
                         <label for="profilePicture">Profile Picture :</label>
                         <input type="file" id="profilePicture" name="image">
-                        <span class="error" id="imgErr"></span>
+                        <span class="error" id="imgErr"> </span>
                     </div>
                     <div class="grid-item">
                         <button type="submit" name="submit">submit</button>
@@ -124,127 +119,123 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"])) {
         </div>
     </div>
     <script>
-
-
+              function checkEmail() {
+        let email = document.getElementById("email").value;
+                
+        let xhttp = new XMLHttpRequest();
+        xhttp.onload = function() {
+           
+                if (this.responseText == "exist" ) {
+                    document.getElementById("emailErr").innerHTML = "Email already exists";
+                } else {
+                    document.getElementById("emailErr").innerHTML = "";
+                }
+        };
+        xhttp.open("GET", "checkEmail.php?email="+email);
+         
+        xhttp.send();
+    }
         function validateForm() {
-            let fname = document.getElementById("firstName").value;
-            let lname = document.getElementById("lastName").value;
-            let email = document.getElementById("email").value;
-            let password = document.getElementById("password").value;
-            let birth_date = document.getElementById("dob").value;
-            let gender = document.querySelector('input[name="gender"]:checked');
-            let number = document.getElementById("contactNumber").value;
+      
 
+    let fname = document.getElementById("firstName").value.trim();
+    let lname = document.getElementById("lastName").value.trim();
+    let email = document.getElementById("email").value.trim();
+    let password = document.getElementById("password").value.trim();
+    let birth_date = document.getElementById("dob").value;
+    let gender = document.querySelector('input[name="gender"]:checked');
+    let number = document.getElementById("contactNumber").value.trim();
 
-            // errors variables
+    // errors variables
+    let fnameErr = document.getElementById("fnameErr");
+    let lnameErr = document.getElementById("lnameErr");
+    let emailErr = document.getElementById("emailErr");
+    let passwordErr = document.getElementById("passwordErr");
+    let dateErr = document.getElementById("dateErr");
+    let genderErr = document.getElementById("genderErr");
+    let numberErr = document.getElementById("numberErr");
 
-            let fnameErr = document.getElementById("fnameErr");
-            let lnameErr = document.getElementById("lnameErr");
-            let passwordErr = document.getElementById("passwordErr");
-            let dateErr = document.getElementById("dateErr");
-            let genderErr = document.getElementById("genderErr");
-            let numberErr = document.getElementById("numberErr");
+            
+    let nameRegex = /^[a-zA-Z ]+$/;
+    let emailRegex = /^\s*([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})\s*$/;
+    let passRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[!@#$%^&*()\-+.]).{6,14}$/;
+    let numberRegex = /^\d{10}$/;
 
-            let nameRegex = /^[a-zA-Z ]+$/;
-            //firstName validation
-            if (fname.trim() == "") {
-                 
-            fnameErr.innerHTML = "first name is required";
+    // firstName validation  
+    if (fname === "") {
+        fnameErr.innerHTML = "First name is required";
+        return false;
+    } else if (!nameRegex.test(fname)) {
+        fnameErr.innerHTML = "Only contain letters";
+        return false;
+    } else {
+        fnameErr.innerHTML = "";
+    }
 
-                return false;
-            } else if (!nameRegex.test(fname)) {
+    // lastName validation
+    if (lname === "") {
+        lnameErr.innerHTML = "Last name is required";
+        return false;
+    } else if (!nameRegex.test(lname)) {
+        lnameErr.innerHTML = "Only contain letters";
+        return false;
+    } else {
+        lnameErr.innerHTML = "";
+    }
 
-                fnameErr.innerHTML = "only contain letters";
-                return false;
-            } else {
-                fnameErr.innerHTML = "";
+    // email validation 
+    if (email === "") {
+        emailErr.innerHTML = "Please enter email address";
+        return false;
+    } else if (!emailRegex.test(email)) {
+        emailErr.innerHTML = "Invalid email address. Enter a valid email address";
+        return false;
+    } else {
+        emailErr.innerHTML = "";
+    }
 
-            }
+    // password validation
+    if (password === "") {
+        passwordErr.innerHTML = "Fill the password please!";
+        return false;
+    } else if (!passRegex.test(password)) {
+        passwordErr.innerHTML = "Invalid password.";
+        return false;
+    } else {
+        passwordErr.innerHTML = "";
+    }
 
-            let lnameRegex = /^[a-zA-Z ]+$/;
-            //lastName validation
-            if (lname.trim() == "") {
-                lnameErr.innerHTML = "last name is required";
-                return false;
-            } else
-            if (!lnameRegex.test(lname)) {
+    // birth date validation
+    if (birth_date === "") {
+        dateErr.innerHTML = "Please select birth date";
+        return false;
+    } else {
+        dateErr.innerHTML = "";
+    }
 
-                lnameErr.innerHTML = "only contain letters";
-                return false;
-            } else {
+    // gender validation 
+    if (!gender) {
+        genderErr.innerHTML = "Please select gender";
+        return false;
+    } else {
+        genderErr.innerHTML = "";
+    }
 
-                lnameErr.innerHTML = "";
+    // number validation
+    if (number === "") {
+        numberErr.innerHTML = "Please enter phone number.";
+        return false;
+    } else if (!numberRegex.test(number)) {
+        numberErr.innerHTML = "Please enter a valid 10-digit phone number.";
+        return false;
+    } else {
+        numberErr.innerHTML = "";
+    }
 
-            }
+    return true;
+}
 
-            // email validation 
-            let emailRegex = /^\s*([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})\s*$/;
-
-            //lastName validation
-
-            if (email == "") {
-
-                emailErr.innerHTML = "please enter email address";
-                return false;
-            } else
-            if (!emailRegex.test(email)) {
-
-                emailErr.innerHTML = "Invalid email address. enter a valid email address";
-                return false;
-            } else {
-
-                emailErr.innerHTML = "";
-
-            }
-
-            //password validation
-
-            let passRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[!@#$%^&*()\-+.]).{6,14}$/;
-            if (password.trim() == "") {
-                passwordErr.innerHTML = "Fill the password please!";
-                return false;
-            } else
-            if (!passRegex.test(password)) {
-
-                passwordErr.innerHTML = "Invalid password.";
-                return false;
-            } else {
-
-                passwordErr.innerHTML = "";
-
-            }
-            // birth date validation
-            if (birth_date == "") {
-                dateErr.innerHTML = "please select birth date";
-                return false;
-            } else {
-                dateErr.innerHTML = "";
-            }
-
-            // gender validation 
-            if (!gender) {
-                genderErr.innerHTML = "please select gender";
-                return false;
-            } else {
-                genderErr.innerHTML = "";
-            }
-
-            // number validation
-            let numberRegex = /^\d{10}$/;
-
-            if (number == "") {
-
-                numberErr.innerHTML = "Please enter phone number.";
-                return false;
-            } else if (!numberRegex.test(number)) {
-                numberErr.innerHTML = "Please enter a valid 10-digit phone number.";
-                return false;
-            } else {
-
-                numberErr.innerHTML = "";
-            }
-            return true;
-        }
+ 
     </script>
 
 </body>
