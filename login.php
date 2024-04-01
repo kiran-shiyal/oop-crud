@@ -21,6 +21,7 @@
      } else
      {
          $email = $_POST["email"];
+         
          // check that the e-mail address is well-formed  
          if (!filter_var($email, FILTER_VALIDATE_EMAIL))
          {
@@ -30,14 +31,8 @@
      if (empty($_POST["password"]))
      {
          $passwordErr = "password is required";
-     } else
-     {
-
-         $password = $_POST["password"];
-         if (strlen($password) < 8)
-         {
-             $passwordErr = "Password too short! ";
-         }
+     }  else {
+        $password = $_POST["password"];
      }
 
      if (empty($emailErr) && empty($passwordErr))
@@ -58,7 +53,7 @@
              {
                  $_SESSION['userName'] = $res['first_name'] . " " . $res['last_name'];
                  echo "<script>alert('login successful');</script>";
-                 header("Refresh: 0; url = index.php");
+                 header("Refresh: 0; url = userlist_datatable.php");
              } else
              {
 
@@ -73,9 +68,6 @@
      }
  }
  ?>
-
-
-
  <!DOCTYPE html>
  <html lang="en">
 
@@ -93,13 +85,11 @@
      <form action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" method="post">
          <h2>Login</h2>
            <div class="grid-container">
-
-         
           <div class="grid-item">
-          <label for="username">Email :</label>
-         <input type="email" name="email" id="username" placeholder="enter a email" value="<?php echo $email; ?>">
+          <label for="email">Email :</label>
+         <input type="email" name="email" id="email" placeholder="enter a email" value="<?php echo $email; ?>" onblur="emailCheck()">
         </div>
-        <span class="error"> <?php echo $emailErr; ?></span>
+        <span class="error" id="emailErr"> <?php echo $emailErr; ?></span>
           <div class="grid-item">
           <label for="password">Password :</label>
          <input type="password" name="password" id="password" placeholder="enter a password" value="<?php echo $password ?>"   >
@@ -112,6 +102,24 @@
      </form>
      </div> 
      </div>
+     <script>
+    function emailCheck() {
+        let email = document.getElementById("email").value;
+                
+        let xhttp = new XMLHttpRequest();
+        xhttp.onload = function() {
+           
+                if (this.responseText == "not-exist" ) {
+                    document.getElementById("emailErr").innerHTML = "Email is not exists";
+                } else {
+                    document.getElementById("emailErr").innerHTML = "";
+                }
+        };
+        xhttp.open("GET", "checkEmail.php?email="+email);
+         
+        xhttp.send();
+    }
+     </script>
  </body>
 
  </html>

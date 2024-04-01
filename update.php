@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update']))
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/update_page.css">
+    <link rel="stylesheet" href="css/register.css">
     <title> update data</title>
 
 </head>
@@ -90,15 +90,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update']))
 
                     </div>
                      
-                     
                     <div class="grid-item">
                         <label for="dob">Date of Birth :</label>
                         <input type="date" id="dob" name="dob" value="<?php echo $res['dob']; ?>">
                         <span class="error" id="dateErr">  </span>
                     </div>
-                <div class="grid-item">
-                    <div class="center">
-                    <label for="" class="gender">Gender : </label>
+                <div class="grid-item center">
+                   
+                    <span class="gender">Gender : </span>
                         <input type="radio" name="gender" id="male" value="male" <?php if ($res['gender'] == "male")
                         {
                             echo "checked";
@@ -114,7 +113,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update']))
                             echo "checked";
                         } ?>>
                         <label for="other">Other</label>
-                    </div>
+                    
                     <span class="error" id="genderErr"></span>
                 </div>    
                     <div class="grid-item">

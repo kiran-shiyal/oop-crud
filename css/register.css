@@ -64,13 +64,19 @@ input[type="file"]{
     height:14px; 
     width:19px;
     cursor: pointer;
-    margin-left: 15px;
+   
+    
  }
  .center {
     display: flex;
     align-items: center;
+    flex-wrap: wrap;
+     justify-content: flex-start;
 }
+ .center label{
 
+    margin-right: 15px;
+ }
  button {
     width: 100%;
     padding: 8px;
@@ -132,24 +138,22 @@ input[type="number"]
      
      
  }
- .center{
-    display: flex;
-    align-items: center;
-    
-  
+ .center label{
+
+    margin-right: 7px;
  }
   } 
 
-  @media screen and (max-width: 295px) {
+  @media screen and (max-width: 302px) {
       
     input[type="radio"]{
         
       margin-left: 1px;
          
      }
-     .center{
-     display: flex;
-     
+     .center label{
+
+        margin-right: 4px;
      }
       } 
     

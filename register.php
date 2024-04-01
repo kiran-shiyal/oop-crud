@@ -7,9 +7,44 @@ error_reporting(E_ALL);
 include("crud.php");
 
 $student = new Database();
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
 
+ 
+require 'vendor/autoload.php';
+
+function sendmail_verify($fname, $lname, $email){
+    
+    $mail = new PHPMailer(true);
+    try{
+
+    $mail->isSMTP();                                            //Send using SMTP
+    $mail->Host       = 'smtp.gmail.com';                     //Set the SMTP server to send through
+    $mail->SMTPAuth   = true;                                   //Enable SMTP authentication
+    $mail->Username   = 'kdshiyal7319@gmail.com';                     //SMTP username
+    $mail->Password   = 'kiran@111';                               //SMTP password
+    $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit TLS encryption
+    $mail->Port       = 465;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
+    
+    //Recipients
+    $mail->setFrom('kdshiyal7319@gmail.com', 'patoliya infotech');
+    $mail->addAddress($email);     //Add a recipient
+     
+    //Content
+    $mail->isHTML(true);                                  //Set email format to HTML
+    $mail->Subject = 'Email verification from patoliya infotech';
+    $mail->Body    = "You have Registered with Patoliya infotech
+      Thanks for registration! " .$fname . $lname;
+    
+    $mail->send();
+  echo 'Message has been sent';
+} catch (Exception $e) {
+    echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+}
+}
 $emailErr = "";
-$fname = $lname = $email= $number = $password = $dob = $gender = $img = $img_temp = "";
+$fname = $lname = $email= $number = $password = $dob = $gender = $img = $img_temp = $verify_token = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"])) {
 
@@ -23,18 +58,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"])) {
         $img_temp = $_FILES['image']['tmp_name'];
         $number = $_POST['number'];
         $folder = "images/" . $img;
+       
         $dob = $_POST["dob"];
         $myDate = new DateTime($dob);
-
+        
         $birth_date = $myDate->format('Y-m-d');
         move_uploaded_file($img_temp, $folder);
 
         $hashPassword = password_hash($password, PASSWORD_DEFAULT);
          
+        $result = $student->login($email);
 
-      
-        
-      
+
+        if (mysqli_num_rows($result) > 0) {
+            
+            $emailErr = "Email already exists";
+        }else {
+            
+        // sendmail_verify("$fname","$lname","$email");
         $result = $student->insert($fname, $lname, $email, $hashPassword, $birth_date, $gender, $number, $folder);
 
         if ($result) {
@@ -43,6 +84,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"])) {
         } else {
             echo "<script>alert('Data not inserted');</script>";
         }
+    }
     }
  
 
@@ -62,6 +104,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"])) {
     <div class="container">
         <div class="apply-box">
             <h2>Registration Form</h2>
+            
             <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data" onsubmit="return validateForm()">
                 <div class="grid-container">
                     <div class="grid-item">
@@ -89,16 +132,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"])) {
                             <input type="date" id="dob" name="dob" value="<?php echo $dob; ?>">
                             <span class="error" id="dateErr"> </span>
                     </div>
-                    <div class="grid-item">
-                        <div class="center">
-                            <label for="" class="gender">Gender : </label>
+                    <div class="grid-item center">
+                        <span class="gender">Gender : </span>
+                         
                             <input type="radio" name="gender"  id="male" value="male">
-                            <label for="male"> Male</label>
+                            <label for="male">Male</label>
                             <input type="radio" name="gender" id="female" value="female">
                             <label for="female"> Female</label>
                             <input type="radio" name="gender" id="other" value="other">
                             <label for="other">Other</label>
-                         </div>
+                         
                         <span class="error" id="genderErr"> </span>
                     </div>
                     <div class="grid-item"> <label for="contactNumber">Contact Number :</label>
@@ -123,10 +166,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"])) {
         let email = document.getElementById("email").value;
                 
         let xhttp = new XMLHttpRequest();
-        xhttp.onload = function() {
+        xhttp.onload = function() { 
            
                 if (this.responseText == "exist" ) {
                     document.getElementById("emailErr").innerHTML = "Email already exists";
+                    return false;
                 } else {
                     document.getElementById("emailErr").innerHTML = "";
                 }
@@ -157,7 +201,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"])) {
 
             
     let nameRegex = /^[a-zA-Z ]+$/;
-    let emailRegex = /^\s*([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})\s*$/;
+    let emailRegex = /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})\s*$/;
     let passRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[!@#$%^&*()\-+.]).{6,14}$/;
     let numberRegex = /^\d{10}$/;
 
