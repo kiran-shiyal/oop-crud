@@ -4,7 +4,7 @@
  if (isset($_SESSION['userName']) && !empty($_SESSION['userName']))
  {
 
-     header("Refresh: 0; url = index.php");
+     header("Refresh: 0; url = userlist_datatable.php");
      exit;
  }
  $emailErr = $passwordErr = "";
@@ -13,37 +13,38 @@
  {
     
      //  $conn = mysqli_connect("localhost","root","root"," student");
-     // $email = $_POST["email"];
-     // $password = $_POST["password"];
+   
      if (empty($_POST["email"]))
      {
          $emailErr = "Email is required";
      } else
      {
-         $email = $_POST["email"];
-         
+        $email = trim($_POST["email"]);
+
          // check that the e-mail address is well-formed  
          if (!filter_var($email, FILTER_VALIDATE_EMAIL))
          {
              $emailErr = "Invalid email format";
+         }else{
+            $emailErr = "";
          }
      }
      if (empty($_POST["password"]))
      {
          $passwordErr = "password is required";
      }  else {
-        $password = $_POST["password"];
+        $password = trim($_POST["password"]);
+        $passwordErr = "";
      }
 
      if (empty($emailErr) && empty($passwordErr))
      {
-         // $sql ="SELECT * FROM users WHERE email = '$email' && password = '$password'";
-         // $result = mysqli_query($conn, $sql);
+        
          include ("crud.php");
          $student = new Database();
          $result = $student->login($email);
 
-         if (mysqli_num_rows($result) == true)
+         if (mysqli_num_rows($result) > 0)
          {
              $res = mysqli_fetch_assoc($result);
              $hashedPassword = $res['password'];
@@ -87,15 +88,15 @@
            <div class="grid-container">
           <div class="grid-item">
           <label for="email">Email :</label>
-         <input type="email" name="email" id="email" placeholder="enter a email" value="<?php echo $email; ?>" onblur="emailCheck()">
+         <input type="text" name="email" id="email" placeholder="enter a email" value="<?php echo $email; ?>" onblur="emailCheck()">
+         <span class="error" id="emailErr"> <?php echo $emailErr; ?></span>
         </div>
-        <span class="error" id="emailErr"> <?php echo $emailErr; ?></span>
-          <div class="grid-item">
-          <label for="password">Password :</label>
-         <input type="password" name="password" id="password" placeholder="enter a password" value="<?php echo $password ?>"   >
+        <div class="grid-item">
+            <label for="password">Password :</label>
+            <input type="password" name="password" id="password" placeholder="enter a password" value="<?php echo $password ?>"   >
+            <span class="error"> <?php echo $passwordErr; ?></span>
 
         </div>
-        <span class="error"> <?php echo $passwordErr; ?></span>
          <button type="submit" name="submit">Login</button>
          <a href="register.php">Click here to Register.</a>
          </div>
@@ -103,14 +104,16 @@
      </div> 
      </div>
      <script>
+
     function emailCheck() {
-        let email = document.getElementById("email").value;
-                
+        let email = document.getElementById("email").value.trim();
+          let emailErr = document.getElementById("emailErr");      
         let xhttp = new XMLHttpRequest();
         xhttp.onload = function() {
            
                 if (this.responseText == "not-exist" ) {
-                    document.getElementById("emailErr").innerHTML = "Email is not exists";
+                    emailErr.innerHTML = "Email is not exists";
+                    
                 } else {
                     document.getElementById("emailErr").innerHTML = "";
                 }
@@ -119,6 +122,8 @@
          
         xhttp.send();
     }
+
+    
      </script>
  </body>
 

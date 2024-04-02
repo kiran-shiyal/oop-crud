@@ -3,36 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>user list</title>
     <link rel="stylesheet" href="//cdn.datatables.net/2.0.3/css/dataTables.dataTables.min.css">
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 <body>
-
-<nav class="navbar navbar-expand-sm navbar-dark bg-dark" id ="navbar">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="javascript:void(0)">Dashboard</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mynavbar">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="mynavbar">
-      <ul class="navbar-nav me-auto">
-        
-      </ul>
-      <form class="d-flex align-items-center ">
-      <div class = "text-white mx-3">
       <?php
-            session_start();
+      include("dashboard.php");
+      ?>         
 
-            echo  $_SESSION['userName'];
-
-            ?>
-            </div>
-         <a href="logout.php" class="btn btn-danger">Logout</a>  
-      </form>
-    </div>
-  </div>
-</nav>
 <div class="container d-flex justify-content-between align-items-center" style="margin-top:40px;" >
         <h2>Users Details</h2>
        <a href="register.php" class="btn btn-success text-center">Add student</a>

@@ -10,7 +10,7 @@ $result = $student->delete($id);
 
 if ($result) {
      
-    header("Refresh: 0; url = index.php");   
+    header("Refresh: 0; url = userlist_datatable.php");   
 
 }
 

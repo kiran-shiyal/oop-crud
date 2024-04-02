@@ -1,11 +1,4 @@
-/* body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100%;
-   
-    margin-top: 130px;
-} */
+ 
 *{
     margin: 0;
     padding: 0;
@@ -26,16 +19,17 @@ body{
 }
 
 .grid-container{
-    
-    display: grid;
-    grid-template-columns: 1fr; 
-    gap: 9px;
+ 
+    display: flex;
+    flex-direction: column;
     font-size: 17px;
+    
+    
 }
  .form{
     max-width: 400px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-   background-color: beige;
+    background-color: beige;
     margin: 0 auto;  
     padding: 20px;
     border-radius: 5px;
@@ -78,19 +72,17 @@ button:hover {
 
 a {
     text-decoration: none;
-    
+    margin-top: 12px;
     text-align: center;
     font-size: 17px;
 }
 
 .error {
     color: #ff0000;
-
+    font-size: 16px;
+    display: block;
+   padding-bottom: 10px;
 }
 
  
-input:focus{
-
-    outline: 2px solid #45a049;
-    border: none;
-}
+ 
