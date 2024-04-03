@@ -77,6 +77,7 @@
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <title>Login</title>
      <link rel="stylesheet" href="css/login.css">
+    
  </head>
 
  <body>
@@ -89,15 +90,19 @@
           <div class="grid-item">
           <label for="email">Email :</label>
          <input type="text" name="email" id="email" placeholder="enter a email" value="<?php echo $email; ?>" onblur="emailCheck()">
-         <span class="error" id="emailErr"> <?php echo $emailErr; ?></span>
+         <div class="error" id="emailErr"> <?php echo $emailErr; ?></div>
         </div>
         <div class="grid-item">
             <label for="password">Password :</label>
             <input type="password" name="password" id="password" placeholder="enter a password" value="<?php echo $password ?>"   >
-            <span class="error"> <?php echo $passwordErr; ?></span>
+            <div class="error" id="passwordErr"> <?php echo $passwordErr; ?></div>
 
         </div>
-         <button type="submit" name="submit">Login</button>
+        <div class="grid-item">
+
+            <button type="submit" name="submit">Login</button>
+
+        </div>
          <a href="register.php">Click here to Register.</a>
          </div>
      </form>
@@ -113,9 +118,11 @@
            
                 if (this.responseText == "not-exist" ) {
                     emailErr.innerHTML = "Email is not exists";
+                    emailErr.style.padding = "0px";
                     
                 } else {
                     document.getElementById("emailErr").innerHTML = "";
+                     
                 }
         };
         xhttp.open("GET", "checkEmail.php?email="+email);

@@ -101,17 +101,17 @@ input[type="file"]{
 button:hover {
     background-color: #45a049;
 }
-.error {
-    color: #ff0000;
-    font-size: 16px;
-    display: block;
-    padding-bottom: 12px;
-    
-}
+    .error {
+        color: #ff0000;
+        font-size: 15.7px;
+        display: block;
+        padding: 9px 0px;
+          
+    }
   
 a {
     text-decoration: none;
-    display: block;
+   
     margin-top: 15px;
     text-align: center;
 }
@@ -148,10 +148,13 @@ input[type="number"]
 
     margin-right: 7px;
  }
+  
   } 
 
   @media screen and (max-width: 302px) {
-      
+      body{
+        font-size: 13px;
+      }
     input[type="radio"]{
         
       margin-left: 1px;

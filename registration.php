@@ -8,46 +8,45 @@ include("crud.php");
 
 $student = new Database();
 
-$fnameErr = $lnameErr = $emailErr = $passwordErr = $dobErr = $genderErr = $numberErr = "";
-$fname = $lname = $email= $number = $password = $dob = $gender = $img = $img_temp = "";
+$fnameErr = $lnameErr = $emailErr = $passwordErr = $dobErr = $genderErr = $numberErr = $fileErr =  "";
+$fname = $lname = $email= $number = $password = $dob = $gender = $img = $img_temp = $fileSize = "";
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"])) {
-
-    if (empty($_POST["firstName"])) {
+    $fname = trim($_POST["firstName"]);
+    if (empty($fname)) {
         $fnameErr = "firstName is required";
     } else {
-        $fname = input_data($_POST["firstName"]);
         // check if name only contains letters and whitespace
         if (!preg_match("/^[a-zA-Z ]*$/", $fname)) {
             $fnameErr = "Only alphabets and white space are allowed";
         }
     }
-
-    if (empty($_POST["lastName"])) {
+    $lname = trim($_POST["lastName"]);
+    if (empty($lname)) {
         $lnameErr = "lastName is required";
     } else {
-        $lname = input_data($_POST["lastName"]);
+        $lname = trim($_POST["lastName"]);
         // check if name only contains letters and whitespace
         if (!preg_match("/^[a-zA-Z ]*$/", $lname)) {
             $lnameErr = "Only alphabets and white space are allowed";
         }
     }
-
-    if (empty($_POST["email"])) {
+    $email = trim($_POST["email"]);
+    if (empty($email)) {
         $emailErr = "Email is required";
     } else {
-        $email = input_data($_POST["email"]);
+        $email = trim($_POST["email"]);
         // check that the e-mail address is well-formed  
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $emailErr = "Invalid email format";
         }
     }
 
-
-    if (empty($_POST["password"])) {
+    $password = trim($_POST["password"]);
+    if (empty($password)) {
         $passwordErr = "password is required";
     } else {
 
-        $password = input_data($_POST["password"]);
+       
         if (strlen($password) < 8) {
             $passwordErr = "Password too short! ";
         }
@@ -65,22 +64,43 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"])) {
         $gender = $_POST["gender"];
        
     }
-    if (empty($_POST["number"])) {
+    $number = trim($_POST["number"]);
+    if (empty($number)) {
        $numberErr = "please enter number";
     }
     else {
-        $number = input_data($_POST["number"]);
+      
         if (!preg_match("/^\d{10}$/ ", $number)) {
             
             $numberErr = "Please enter 10-digit phone number.";
         }
     }
 
-    if (empty($fnameErr) && empty($lnameErr) && empty($emailErr) && empty($numberErr) && empty($passwordErr) && empty($dobErr) && empty($genderErr)) {
+    $img = $_FILES['image']['name'];
+    $fileSize = $_FILES['image']['size'];
+    $maxFileSize = $fileSize / 1024;
+    $allowedExtensions = array('jpg', 'jpeg', 'png');
+    $fileExtension = strtolower(pathinfo($img, PATHINFO_EXTENSION));
+
+ 
+     if(empty($img)){
+        $fileErr = "please select image";
+
+     }else if($maxFileSize  > (2 * 1024)){
+           $fileErr = "File must be smaller than 2MB";
+     }else {
+         if (!in_array($fileExtension, $allowedExtensions)) {
+             $fileErr = "Only JPG, JPEG and PNG files are allowed.";
+         }
+     }
+
+
+    
+
+    if (empty($fnameErr) && empty($lnameErr) && empty($emailErr) && empty($numberErr) && empty($passwordErr) && empty($dobErr) && empty($genderErr) && empty($fileErr)) {
 
         $gender = $_POST['gender'];
-       
-        $img = $_FILES['image']['name'];
+      
         $img_temp = $_FILES['image']['tmp_name'];
         $folder = "images/" . $img;
 
@@ -100,13 +120,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit"])) {
 
 
 
-function input_data($data)
-{
-    $data = trim($data);
-    $data = stripslashes($data);
-    $data = htmlspecialchars($data);
-    return $data;
-}
+ 
 ?>
 
 <!DOCTYPE html>
@@ -116,40 +130,56 @@ function input_data($data)
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registration form</title>
     <link rel="stylesheet" href="css/register.css">
+    <style>
+        *{
+           box-sizing: border-box; 
+        }
+.error {
+    color: #ff0000; 
+    font-size:16px; 
+    
+    
+}
+div.error{
+    height: 17px;
+}
+    </style>
 </head>
-<body>
+<body>  
 <div class="container">
         <div class="apply-box">
             <h2>Registration Form</h2>
-            <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data" onsubmit="return validateForm()">
+            <form method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data" >
                 <div class="grid-container">
                     <div class="grid-item">
                         <label for="firstName">First Name :</label>
                         <input type="text" id="firstName" name="firstName" value="<?php echo $fname; ?>" placeholder="enter a firstName" />
-                        <span class="error" id="fnameErr"><?php echo $fnameErr; ?> </span>
+                        <div class="error"  ><?php echo $fnameErr; ?> </div>
                           
                     </div>
                     <div class="grid-item">
                         <label for="lastName">Last Name :</label>
                         <input type="text" id="lastName" name="lastName" value="<?php echo $lname; ?>" placeholder="enter a lastName" />
-                        <span class="error" id="lnameErr"><?php echo $lnameErr; ?></span>
+                        
+                        <div class="error"  ><?php echo $lnameErr; ?> </div>
                     </div>
                     <div class="grid-item">
                         <label for="email">Email :</label>
                         <input type="text" id="email" name="email"  value="<?php echo $email; ?>" autocomplete="on" placeholder="enter a email" onblur="checkEmail()">
-                        <span class="error" id="emailErr">  <?php echo $emailErr; ?></span>
+                         
+                        <div class="error"  ><?php echo $emailErr; ?> </div>
                     </div>
                     <div class="grid-item"> <label for="password">Password :</label>
                         <input type="password" id="password" name="password" value="<?php echo $password; ?>" placeholder="enter a password">
-                        <span class="error" id="passwordErr"><?php echo $passwordErr; ?></span>
+                        <div class="error"  ><?php echo $passwordErr; ?> </div>
                     </div>
                         <div class="grid-item">
                             <label for="dob">Date of Birth :</label>
                             <input type="date" id="dob" name="dob" value="<?php echo $dob; ?>">
-                            <span class="error" id="dateErr"><?php echo $dobErr; ?> </span>
+                            <div class="error" ><?php echo $dobErr; ?> </div>
                     </div>
                     <div class="grid-item center">
-                        <span class="gender">Gender : </span>
+                        <div class="gender">Gender : </div>
                          
                             <input type="radio" name="gender"  id="male" value="male">
                             <label for="male">Male</label>
@@ -158,16 +188,16 @@ function input_data($data)
                             <input type="radio" name="gender" id="other" value="other">
                             <label for="other">Other</label>
                          
-                        <span class="error" id="genderErr"> <?php echo $genderErr; ?></span>
-                    </div>
+                        </div>
+                        <div class="error"  ><?php echo $genderErr; ?> </div>
                     <div class="grid-item"> <label for="contactNumber">Contact Number :</label>
                         <input type="number" id="contactNumber" name="number" value="<?php echo $number ?>" >
-                        <span class="error" id="numberErr"><?php echo $numberErr; ?> </span>
+                        <div class="error"  ><?php echo $numberErr; ?> </div>
                     </div>
                     <div class="grid-item">
                         <label for="profilePicture">Profile Picture :</label>
                         <input type="file" id="profilePicture" name="image">
-                        <span class="error" id="imgErr"> </span>
+                        <div class="error"><?php echo $fileErr; ?> </div>                    
                     </div>
                     <div class="grid-item">
                         <button type="submit" name="submit">submit</button>

@@ -25,9 +25,10 @@ body{
     font-size: 17px;
     
     
+    
 }
  .form{
-    max-width: 400px;
+    max-width: 350px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     background-color: beige;
     margin: 0 auto;  
@@ -42,6 +43,7 @@ input
     border: 1px solid black;
     border-radius: 5px;
     font-size: 15px;
+    
 }
 h2 {
     text-align: center;
@@ -54,14 +56,13 @@ h2 {
 
 button {
     width: 100%;
-    margin-top: 10px;
+     margin-top: 10px;
     padding: 10px;
     background-color: green;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-  
     font-size: 17px;
     /* Add space between password field and button */
 }
@@ -74,15 +75,16 @@ a {
     text-decoration: none;
     margin-top: 12px;
     text-align: center;
-    font-size: 17px;
+    font-size: 17px;    
 }
 
-.error {
+ .error {
     color: #ff0000;
-    font-size: 16px;
-    display: block;
-   padding-bottom: 10px;
-}
+    font-size: 15.7px;
+    height: 15px;
+  
+    
+ }
 
  
  

@@ -16,14 +16,14 @@
 
     // update data 
     $fnameErr = $lnameErr = $emailErr = $passwordErr = $dobErr = "";
-    $fname = $lname = $email = $password = $dob = $gender = "";
+    $fname = $lname  = $dob = $gender = $number = $img =  "";
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update'])) {
-        $fname = $_POST["firstName"];
-        $lname = $_POST["lastName"];
-        $dob = $_POST["dob"];
+        $fname = trim($_POST["firstName"]);
+        $lname = trim($_POST["lastName"]);
+        $dob = trim($_POST["dob"]);
         $gender = $_POST['gender'];
-        $number = $_POST['number'];
+        $number = trim($_POST['number']);
 
         $img = $_FILES['image']['name'];
         $img_temp = $_FILES['image']['tmp_name'];
@@ -62,11 +62,15 @@
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
      <link rel="stylesheet" href="css/update_page.css">
      <title>update data</title>
+     <style>
+        span.error{
+            height: 15px;
+        }
+     </style>
 
  </head>
 
  <body>
-
      <div class="container">
          <div class="apply-box">
              <h2>Update Form</h2>
@@ -115,8 +119,8 @@
                      </div>
                      <div class="grid-item">
                          <label for="profilePicture">Profile Picture:</label>
-                         <input type="File" id="profilePicture" name="image" class="file">
-
+                         <input type="file" id="file" name="image" class="file">
+                         <span class="error" id="imgErr"> </span>
                      </div>
                      <div class="grid-item">
                          <button type="submit" name="update">Update</button>
@@ -128,6 +132,7 @@
      </div>
      <script>
          function validateForm() {
+
              let fname = document.getElementById("firstName").value.trim();
              let lname = document.getElementById("lastName").value.trim();
 
@@ -135,6 +140,7 @@
              let birth_date = document.getElementById("dob").value.trim();
              let gender = document.querySelector('input[name="gender"]:checked');
              let number = document.getElementById("contactNumber").value.trim();
+             let img_path =document.getElementById("file");
 
              // errors variables
 
@@ -144,11 +150,9 @@
              let dateErr = document.getElementById("dateErr");
              let genderErr = document.getElementById("genderErr");
              let numberErr = document.getElementById("numberErr");
-
+             let fileErr = document.getElementById("imgErr");
              let nameRegex = /^[a-zA-Z ]+$/;
-
-              
-            
+   
              let flag = 1;
              //firstName validation
              if (fname === "") {
@@ -162,7 +166,7 @@
                  fnameErr.innerHTML = "";
                  fnameErr.style.padding = "7px 0px";
              }
-
+             
              let lnameRegex = /^[a-zA-Z ]+$/;
              //lastName validation
              if (lname === "") {
@@ -212,7 +216,34 @@
                  numberErr.innerHTML = "";
                  numberErr.style.padding = "7px 0px";
              }
+
+            
+              if (img_path.value) {
+                
+                let img = img_path.files[0].size;
+                 // Check file extension
+                 let allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
+                let img_name = img_path.files[0].name;
+                let img_size = img / 1024;
+                if (img_size > (1024 * 2)) {
+                    fileErr.innerHTML = "File must be smaller than 2MB";
+                    flag = 0;
+                } else if (!allowedExtensions.exec(img_name)) {
+
+                        fileErr.innerHTML = "Allowed file types are .jpg, .jpeg, and .png";
+                        fileErr.style.padding = "0px";
+                        flag = 0;
+                    } else {
+                        fileErr.innerHTML = "";
+                        fileErr.style.padding = "7px 0px";
+                    }
+                }
+
+         
+
              if (flag == 0) {
+               
+                
                  return false;
              } else {
 

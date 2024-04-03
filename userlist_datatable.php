@@ -17,7 +17,7 @@
         <h2>Users Details</h2>
        <a href="register.php" class="btn btn-success text-center">Add student</a>
     </div>
-    <div class="container container-sm container-md ">
+    <div class="container container-sm container-md container-lg ">
    
  <div class="table-responsive">
     <table  class="table table-bordered" id="data_table">
@@ -54,7 +54,7 @@
 
                 while($res = mysqli_fetch_assoc($result)) {
 
-                    //formetinge date
+                   
                     $date = date_create(($res['dob']));
                     $formatted_date = date_format($date, "d/m/Y");
             ?>
@@ -84,6 +84,7 @@
  <script src="//cdn.datatables.net/2.0.3/js/dataTables.min.js"></script>
  <script>
 $(document).ready(function () {
+
     $("#data_table").dataTable();
 });
     
